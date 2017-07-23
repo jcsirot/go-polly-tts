@@ -33,8 +33,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println(opts.Positional.Text)
-
 	config := &aws.Config{}
 	config = config.WithRegion(opts.AWSRegion)
 	if opts.AccessKeyID != "" && opts.SecretAccessKey != "" {
