@@ -17,7 +17,9 @@ import (
 
 func main() {
 	var opts struct {
-		Text            string `short:"t" long:"text" description:"The text to read" required:"true"`
+		Positional struct {
+			Text string `description:"The text to read" positional-arg-name:"text" required:"yes"`
+		} `positional-args:"yes" required:"yes"`
 		Voice           string `short:"v" long:"voice" description:"The voice ID to use to read the text" required:"true"`
 		Rate            string `short:"r" long:"rate" description:"The reading speed rate" choice:"x-slow" choice:"slow" choice:"medium" choice:"fast" choice:"x-fast" default:"medium"`
 		Output          string `short:"o" long:"output" description:"Path to the output file" default:"output.mp3"`
@@ -31,6 +33,8 @@ func main() {
 		os.Exit(1)
 	}
 
+	fmt.Println(opts.Positional.Text)
+
 	config := &aws.Config{}
 	config = config.WithRegion(opts.AWSRegion)
 	if opts.AccessKeyID != "" && opts.SecretAccessKey != "" {
@@ -41,7 +45,7 @@ func main() {
 
 	svc := polly.New(session.Must(session.NewSession(config)))
 
-	text := fmt.Sprintf("<speak><prosody rate='%s'>%s</prosody></speak>", strings.ToLower(opts.Rate), opts.Text)
+	text := fmt.Sprintf("<speak><prosody rate='%s'>%s</prosody></speak>", strings.ToLower(opts.Rate), opts.Positional.Text)
 	input := &polly.SynthesizeSpeechInput{}
 	input = input.SetText(text).SetTextType("ssml")
 	input = input.SetOutputFormat("mp3")
