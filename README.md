@@ -5,6 +5,10 @@ A very simple TTS application using [AWS Polly](https://aws.amazon.com/polly/) s
 
     go get -u github.com/jcsirot/go-polly-tts
 
+## Build
+
+    go build -o go-polly-tts
+
 ## Usage
 
 ``` plain
