@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"html"
 	"io"
 	"log"
 	"os"
@@ -43,7 +44,7 @@ func main() {
 
 	svc := polly.New(session.Must(session.NewSession(config)))
 
-	text := fmt.Sprintf("<speak><prosody rate='%s'>%s</prosody></speak>", strings.ToLower(opts.Rate), opts.Positional.Text)
+	text := fmt.Sprintf("<speak><prosody rate='%s'>%s</prosody></speak>", strings.ToLower(opts.Rate), html.EscapeString(opts.Positional.Text))
 	input := &polly.SynthesizeSpeechInput{}
 	input = input.SetText(text).SetTextType("ssml")
 	input = input.SetOutputFormat("mp3")
